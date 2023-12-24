@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/static/css/main.94d821cf.css",
+    "main.js": "/static/js/main.fdbeae01.js",
+    "static/media/bg-image.png": "/static/media/bg-image.3b8deba25073c1e88e59.png",
+    "static/media/notfound_img.svg": "/static/media/notfound_img.f3604e29d7a415b9d07292f44cec8738.svg",
+    "static/media/cap-logo.png": "/static/media/cap-logo.1c8b5db688a152731f40.png",
+    "index.html": "/index.html",
+    "main.94d821cf.css.map": "/static/css/main.94d821cf.css.map",
+    "main.fdbeae01.js.map": "/static/js/main.fdbeae01.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.94d821cf.css",
+    "static/js/main.fdbeae01.js"
+  ]
+}
