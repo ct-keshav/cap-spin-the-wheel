@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/static/css/main.af58a840.css",
+    "main.js": "/static/js/main.e6074778.js",
+    "static/media/Game_BG.png": "/static/media/Game_BG.debfd6ac9aae1f6f99ac.png",
+    "static/media/notfound_img.svg": "/static/media/notfound_img.f3604e29d7a415b9d07292f44cec8738.svg",
+    "static/media/cap-logo.png": "/static/media/cap-logo.1c8b5db688a152731f40.png",
+    "index.html": "/index.html",
+    "main.af58a840.css.map": "/static/css/main.af58a840.css.map",
+    "main.e6074778.js.map": "/static/js/main.e6074778.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.af58a840.css",
+    "static/js/main.e6074778.js"
+  ]
+}
