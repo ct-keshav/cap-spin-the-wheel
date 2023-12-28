@@ -6,7 +6,7 @@ import axios from 'axios';
 
 const vctr = {
     notFound: require("../Images/notfound_img.svg").default,
-    bg_image: require("../Images/bg-image.png"),
+    bg_image: require("../Images/Game_BG.png"),
     cap_logo: require("../Images/cap-logo.png"),
 };
 
@@ -37,7 +37,6 @@ function Form() {
         }
     }
     )
-
 
     const handleInputChange = (name, value) => {
         setFormData({
@@ -80,6 +79,8 @@ function Form() {
         return isValid;
     };
 
+
+    // add user -> generate token -> get campaign url -> store the url in localStorage.
     const AddCustomer = async () => {
         try {
             setLoading(true);
@@ -112,7 +113,59 @@ function Form() {
 
             const customerResponse = await axios.request(customerConfig);
             if (customerResponse?.data?.response?.status?.code === 200) {
-                setSubmitStatus("success");
+                let data = JSON.stringify({
+                    "userId": `${formData.country}${formData.phone}`,
+                    "writeKey": "dc2a1eb9643226559d07d6c080e5d5f1a3dbbb1a"
+                });
+
+                let config = {
+                    method: 'post',
+                    maxBodyLength: Infinity,
+                    url: 'https://api.customerglu.com/user/v1/user/sdk?token=true',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    data: data
+                };
+                axios.request(config)
+                    .then((response) => {
+                        if (response?.data?.data?.token) {
+                            let config = {
+                                method: 'get',
+                                maxBodyLength: Infinity,
+                                url: 'https://api.customerglu.com/reward/v1.1/user?campaignId=b0ab89fe-826a-4eb6-9a4f-a3ef4ea97f53',
+                                headers: {
+                                    'Authorization': `Bearer ${response?.data?.data?.token}`
+                                }
+                            };
+                            axios.request(config)
+                                .then((response) => {
+                                    if (response?.data?.campaigns?.[0]?.url) {
+                                        setLoading(false);
+                                        localStorage.setItem("campaignUrl", response?.data?.campaigns?.[0]?.url);
+                                        setSubmitStatus('success');
+                                    } else {
+                                        setSubmitStatus("error");
+                                        setValidationErrors({
+                                            ...validationErrors,
+                                            addCustomer: 'Customer registration failed, pls try again.',
+                                        });
+                                    }
+                                })
+                                .catch((error) => {
+                                    console.log(error);
+                                });
+                        } else {
+                            setSubmitStatus("error");
+                            setValidationErrors({
+                                ...validationErrors,
+                                addCustomer: 'Customer registration failed, pls try again.',
+                            });
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
             } else {
                 setSubmitStatus("error");
                 setValidationErrors({
@@ -123,8 +176,6 @@ function Form() {
 
         } catch (error) {
             console.error(error);
-        } finally {
-            setLoading(false);
         }
     };
 
@@ -141,6 +192,9 @@ function Form() {
         if (submitStatus === 'success') {
             nav(`/play?email=${formData?.email}&phone=${formData?.country}${formData?.phone}`);
         }
+        if (submitStatus === 'error') {
+            setLoading(false);
+        }
         const user = sessionStorage.getItem("user");
         if (user) {
             sessionStorage.removeItem('user');
@@ -148,7 +202,7 @@ function Form() {
     }, [submitStatus, formData, nav]);
 
     return (
-        <div className="flex flex-col items-center justify-start min-h-screen p-6 bg-dark-blue" style={{ backgroundImage: `url(${vctr.bg_image})`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }}>
+        <div className="flex flex-col items-center justify-start min-h-screen p-6 bg-[#5799DA]" style={{ backgroundImage: `url(${vctr.bg_image})`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }}>
             <div className="flex justify-center mt-4">
                 <img src={vctr.cap_logo} className="h-10" alt="Logo" />
             </div>
@@ -157,7 +211,7 @@ function Form() {
                 onSubmit={handleSubmit}
             >
                 <h2 className="mb-4 text-xl font-bold text-center text-red-800 md:text-2xl">
-                    Join our Christmas Celebration!
+                    Join our Gaming Madness Campaign
                 </h2>
                 <input
                     required
@@ -204,11 +258,10 @@ function Form() {
                 <button
                     className="block font-bold px-4 py-2 mt-4 text-white bg-[#1F9A1D] rounded hover:bg-green-500 focus:outline-none"
                 >
-                    {loading ? "Loading..." : "Continue"}
+                    {loading ? `Game is loading...` : "Continue"}
                 </button>
             </form>
         </div>
     );
 }
-
 export default Form;
