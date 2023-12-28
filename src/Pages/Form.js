@@ -92,7 +92,6 @@ function Form() {
                             {
                                 "mobile": `${formData.country}${formData.phone}`,
                                 "email": `${formData.email}`,
-                                "external_id": "phone",
                                 "source": "INSTORE",
                                 "type": "LOYALTY"
                             }
@@ -190,7 +189,8 @@ function Form() {
 
     useEffect(() => {
         if (submitStatus === 'success') {
-            nav(`/play?email=${formData?.email}&phone=${formData?.country}${formData?.phone}`);
+            setTimeout(()=>{nav(`/play?email=${formData?.email}&phone=${formData?.country}${formData?.phone}`)},2250)
+            // nav(`/play?email=${formData?.email}&phone=${formData?.country}${formData?.phone}`);
         }
         if (submitStatus === 'error') {
             setLoading(false);
