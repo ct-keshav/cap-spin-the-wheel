@@ -92,7 +92,6 @@ function Form() {
                             {
                                 "mobile": `${formData.country}${formData.phone}`,
                                 "email": `${formData.email}`,
-                                "external_id": "phone",
                                 "source": "INSTORE",
                                 "type": "LOYALTY"
                             }
